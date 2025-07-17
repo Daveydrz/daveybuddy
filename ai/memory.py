@@ -177,7 +177,8 @@ class MemoryContextValidator:
                     inappropriate_words = self.inappropriate_suggestions[entity.status]
                     for word in inappropriate_words:
                         if word in response_lower:
-                            warnings.append(f"Inappropriate suggestion '{word}' for {entity.status.value} entity '{entity_name}'")
+                            status_value = entity.status.value if entity.status else "unknown"
+                            warnings.append(f"Inappropriate suggestion '{word}' for {status_value} entity '{entity_name}'")
         
         return len(warnings) == 0, warnings
     
@@ -236,8 +237,8 @@ class MemoryInferenceEngine:
         
         # Check if new fact contradicts existing entity status
         for entity_name, entity in existing_entities.items():
-            if entity_name.lower() in new_fact.value.lower():
-                if entity.status == EntityStatus.DECEASED and "alive" in new_fact.value.lower():
+            if entity_name.lower() in (new_fact.value.lower() if new_fact.value else ""):
+                if entity.status == EntityStatus.DECEASED and "alive" in (new_fact.value.lower() if new_fact.value else ""):
                     contradictions.append(f"New fact suggests {entity_name} is alive, but recorded as deceased")
                 elif entity.status == EntityStatus.CURRENT and "used to" in new_fact.key:
                     contradictions.append(f"New fact suggests {entity_name} is former, but recorded as current")
@@ -289,7 +290,8 @@ class UserMemorySystem:
         # 🧠 MEGA-INTELLIGENT: Auto-generate implications
         implications = self.inference_engine.infer_entity_implications(entity)
         
-        print(f"[MegaMemory] 🧠 Entity Added: {name} ({entity_type}) - Status: {status.value}")
+        status_value = status.value if status else "unknown"
+        print(f"[MegaMemory] 🧠 Entity Added: {name} ({entity_type}) - Status: {status_value}")
         print(f"[MegaMemory] 💭 Implications: {', '.join(implications)}")
         
         self.save_memory()
@@ -405,7 +407,8 @@ class UserMemorySystem:
         if ENTROPY_AVAILABLE:
             entropy_engine = get_entropy_engine()
             uncertainty_state = entropy_engine.get_uncertainty_state()
-            print(f"[Memory] 🌀 Probabilistic memory retrieval - uncertainty: {uncertainty_state.value}")
+            uncertainty_value = uncertainty_state.value if uncertainty_state else "normal"
+            print(f"[Memory] 🌀 Probabilistic memory retrieval - uncertainty: {uncertainty_value}")
         
         # Recent personal facts with entity awareness + PROBABILISTIC SELECTION
         all_facts = list(self.personal_facts.values())
@@ -448,7 +451,8 @@ class UserMemorySystem:
             if fact.current_status == EntityStatus.CURRENT:
                 context_parts.append(fact_text)
             else:
-                context_parts.append(f"Former {fact_text} (Status: {fact.current_status.value})")
+                status_value = fact.current_status.value if fact.current_status else "unknown"
+                context_parts.append(f"Former {fact_text} (Status: {status_value})")
         
         # Critical entity statuses with UNCERTAIN RECALL
         all_entities = list(self.entity_memories.values())
@@ -464,7 +468,8 @@ class UserMemorySystem:
             critical_entities = entities_to_mention
         
         for entity in critical_entities:
-            status_desc = f"{entity.name} ({entity.entity_type}): {entity.status.value}"
+            status_value = entity.status.value if entity.status else "unknown"
+            status_desc = f"{entity.name} ({entity.entity_type}): {status_value}"
             if entity.status == EntityStatus.DECEASED:
                 status_desc += " - Handle with sensitivity"
             
@@ -494,7 +499,8 @@ class UserMemorySystem:
                 emotion_context += f" (Related to: {', '.join(recent_emotion.trigger_entities)})"
             
             # ✅ ENTROPY SYSTEM: Uncertainty about emotional memories
-            if ENTROPY_AVAILABLE and entropy_engine.get_uncertainty_state().value == "uncertain":
+            uncertainty_state = entropy_engine.get_uncertainty_state() if ENTROPY_AVAILABLE else None
+            if ENTROPY_AVAILABLE and uncertainty_state and uncertainty_state.value == "uncertain":
                 emotion_context = "I'm not entirely sure, but " + emotion_context.lower()
             
             context_parts.append(emotion_context)
@@ -790,7 +796,7 @@ class UserMemorySystem:
             entities_data = {}
             for name, entity in self.entity_memories.items():
                 entity_dict = asdict(entity)
-                entity_dict['status'] = entity.status.value  # Convert enum to string
+                entity_dict['status'] = entity.status.value if entity.status else "unknown"  # Convert enum to string
                 entities_data[name] = entity_dict
             json.dump(entities_data, f, indent=2)
     
@@ -849,7 +855,7 @@ class UserMemorySystem:
             for k, v in self.personal_facts.items():
                 fact_dict = asdict(v)
                 if hasattr(v, 'current_status'):
-                    fact_dict['current_status'] = v.current_status.value
+                    fact_dict['current_status'] = v.current_status.value if v.current_status else "unknown"
                 facts_data[k] = fact_dict
             json.dump(facts_data, f, indent=2)
     
