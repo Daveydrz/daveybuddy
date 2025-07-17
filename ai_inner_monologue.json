@@ -1,19 +1,11 @@
 {
   "recent_thoughts": [
     {
-      "content": "The logic suggests that my experiences and growth",
-      "thought_type": "analytical",
+      "content": "It would be good to focus on my experiences and growth",
+      "thought_type": "planning",
       "intensity": 0.6,
-      "timestamp": "2025-07-17T00:53:01.298169",
-      "triggered_by": "pondering interactions",
-      "emotional_tone": "neutral"
-    },
-    {
-      "content": "I notice that I tend to my experiences and growth",
-      "thought_type": "reflection",
-      "intensity": 0.6,
-      "timestamp": "2025-07-17T00:53:01.298682",
-      "triggered_by": "Testing inner consciousness",
+      "timestamp": "2025-07-17T10:15:16.230381",
+      "triggered_by": "reflecting on experiences",
       "emotional_tone": "neutral"
     }
   ],
@@ -24,12 +16,12 @@
     "contemplation_depth": 0.4
   },
   "metrics": {
-    "total_thoughts": 3,
+    "total_thoughts": 4,
     "insights_generated": 0,
     "thoughts_by_type": {
       "reflection": 1,
       "observation": 0,
-      "planning": 0,
+      "planning": 1,
       "memory": 0,
       "creative": 0,
       "analytical": 2,
@@ -39,5 +31,5 @@
       "spontaneous": 0
     }
   },
-  "last_updated": "2025-07-17T00:53:07.300890"
+  "last_updated": "2025-07-17T10:15:22.231386"
 }

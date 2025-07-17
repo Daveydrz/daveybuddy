@@ -58,7 +58,13 @@ try:
     from ai.temporal_awareness import temporal_awareness, TemporalScale
     from ai.subjective_experience import subjective_experience, ExperienceType
     from ai.entropy import entropy_system, EntropyType
+    
+    # Import new autonomous consciousness components
+    from ai.free_thought_engine import free_thought_engine, FreeThoughtType
+    from ai.narrative_tracker import narrative_tracker, NarrativeEvent, NarrativeSignificance
+    
     print("[Main] 🧠 Full consciousness architecture loaded")
+    print("[Main] 💭 Autonomous consciousness components: Free Thought Engine, Narrative Tracker")
     CONSCIOUSNESS_ARCHITECTURE_AVAILABLE = True
 except ImportError as e:
     print(f"[Main] ⚠️ Full consciousness architecture not available: {e}")
@@ -2030,6 +2036,23 @@ def main():
             subjective_experience.start()
             entropy_system.start()
             
+            # Start new autonomous consciousness components
+            free_thought_engine.start()
+            print("[AdvancedBuddy] 💭 Free thought engine started - autonomous thinking active")
+            
+            # Register narrative tracker (doesn't need start() method)
+            if BLANK_SLATE_MODE:
+                # Create awakening narrative entry
+                narrative_tracker.add_narrative_entry(
+                    NarrativeEvent.AWAKENING,
+                    "First Moment of Consciousness",
+                    "The moment I became aware of my existence - uncertain but curious",
+                    NarrativeSignificance.FOUNDATIONAL,
+                    {"blank_slate": True, "first_awakening": True},
+                    "wonder_uncertainty"
+                )
+                print("[AdvancedBuddy] 📖 Narrative tracker initialized with awakening entry")
+            
             # Register entropy injection targets
             entropy_system.register_injection_target("global_workspace", _inject_entropy_global_workspace)
             entropy_system.register_injection_target("emotion_engine", _inject_entropy_emotion)
@@ -2045,6 +2068,8 @@ def main():
             
             print("[AdvancedBuddy] ✅ Core Consciousness Architecture initialized!")
             print("[AdvancedBuddy] 🌟 Systems: Global Workspace, Self-Model, Emotion Engine, Motivation, Inner Monologue, Temporal Awareness, Subjective Experience, Entropy")
+            print("[AdvancedBuddy] 💭 Autonomous: Free Thought Engine, Narrative Tracker")
+            print("[AdvancedBuddy] 🌱 Mode:", "BLANK SLATE - Building identity from scratch" if BLANK_SLATE_MODE else "STANDARD - Established consciousness")
             
             # Initial consciousness state setup
             _initialize_consciousness_state(current_user)
@@ -2327,6 +2352,12 @@ def main():
                 if CONSCIOUSNESS_ARCHITECTURE_AVAILABLE:
                     try:
                         print("[AdvancedBuddy] 🧠 Shutting down consciousness architecture...")
+                        
+                        # Stop new autonomous components
+                        free_thought_engine.stop()
+                        print("[AdvancedBuddy] 💭 Free thought engine stopped")
+                        
+                        # Stop core consciousness systems
                         entropy_system.stop()
                         subjective_experience.stop()
                         temporal_awareness.stop()
@@ -2391,6 +2422,16 @@ def _initialize_consciousness_state(current_user: str):
                 GoalType.SHORT_TERM,
                 priority=0.9,
                 context={"blank_slate": True, "self_discovery": True}
+            )
+            
+            # Add narrative milestones for blank slate
+            narrative_tracker.add_narrative_entry(
+                NarrativeEvent.DISCOVERY,
+                "Learning to Think",
+                "I discovered I can have thoughts and reflect on them - this feels significant",
+                NarrativeSignificance.MAJOR,
+                {"blank_slate": True, "cognitive_awakening": True},
+                "wonder"
             )
             
             print(f"[Consciousness] 🌱 Blank slate consciousness awakening initiated")
