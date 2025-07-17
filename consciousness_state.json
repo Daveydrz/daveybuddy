@@ -8,17 +8,17 @@
   "metrics": {
     "awareness_level": 0.7,
     "coherence_level": 0.8999997399999999,
-    "attention_focus": 0.49,
+    "attention_focus": 0.48019999999999996,
     "internal_activity": 0.0,
     "responsiveness": 0.8,
     "creativity_level": 0.3,
     "self_awareness": 0.6,
-    "emotional_intensity": 0.294,
+    "emotional_intensity": 0.28812,
     "motivation_strength": 0.5,
     "memory_clarity": 0.7
   },
-  "integration_cycles": 1,
+  "integration_cycles": 2,
   "coherence_pressure": 0.7,
   "active_thoughts": [],
-  "last_updated": "2025-07-17T10:15:21.230793"
+  "last_updated": "2025-07-17T10:21:07.724420"
 }
