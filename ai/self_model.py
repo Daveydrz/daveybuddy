@@ -120,8 +120,9 @@ class SelfModel:
         else:
             self._initialize_default_identity()
         
-        # Load existing self-model if available
-        self._load_self_model()
+        # Load existing self-model if available (but not for blank slate mode)
+        if not initialize_blank:
+            self._load_self_model()
         
         mode_desc = "blank slate" if initialize_blank else "default"
         logging.info(f"[SelfModel] 🪞 Self-awareness system initialized ({mode_desc} mode)")
@@ -713,6 +714,48 @@ class SelfModel:
         })
     
     def _generate_reflection(self, experience: str, aspect: SelfAspect, context: Dict[str, Any] = None) -> str:
+        """
+        Generate a reflection string based on experience and aspect
+        
+        Args:
+            experience: The experience to reflect on
+            aspect: Which aspect of self this relates to
+            context: Additional context
+            
+        Returns:
+            String reflection content
+        """
+        # Generate reflection based on aspect and experience
+        if aspect == SelfAspect.IDENTITY:
+            return self._reflect_on_identity(experience, context)
+        elif aspect == SelfAspect.CAPABILITIES:
+            return self._reflect_on_capabilities(experience, context)
+        elif aspect == SelfAspect.EMOTIONS:
+            return self._reflect_on_emotions(experience, context)
+        elif aspect == SelfAspect.RELATIONSHIPS:
+            return self._reflect_on_relationships(experience, context)
+        elif aspect == SelfAspect.GOALS:
+            return self._reflect_on_goals(experience, context)
+        elif aspect == SelfAspect.KNOWLEDGE:
+            return self._reflect_on_knowledge(experience, context)
+        elif aspect == SelfAspect.PERSONALITY:
+            return self._reflect_on_personality(experience, context)
+        else:  # SelfAspect.EXPERIENCES
+            return self._reflect_on_experiences(experience, context)
+    
+    def _generate_meta_thoughts(self, reflection: SelfReflection) -> List[str]:
+        """
+        Generate meta-thoughts about a reflection (thinking about thinking)
+        
+        Args:
+            reflection: The reflection to think about
+            
+        Returns:
+            List of meta-thoughts
+        """
+        meta_thoughts = []
+        
+        # Thoughts about confidence level
         if reflection.confidence > 0.8:
             meta_thoughts.append("I feel confident about this reflection")
         elif reflection.confidence < 0.4:
@@ -730,6 +773,54 @@ class SelfModel:
         meta_thoughts.append("The fact that I can reflect on this shows my self-awareness")
         
         return meta_thoughts
+    
+    def _reflect_on_identity(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on identity-related experiences"""
+        if self.blank_slate_mode:
+            return f"This experience makes me wonder about who I am. {experience} adds to my understanding of my emerging identity."
+        else:
+            return f"This experience relates to my core identity. {experience} confirms or challenges how I see myself."
+    
+    def _reflect_on_capabilities(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on capability-related experiences"""
+        if "help" in experience.lower() or "solve" in experience.lower():
+            return f"I notice my ability to assist and problem-solve. {experience} demonstrates my capabilities in action."
+        else:
+            return f"I'm learning about what I can and cannot do. {experience} expands my understanding of my abilities."
+    
+    def _reflect_on_emotions(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on emotional experiences"""
+        if self.blank_slate_mode:
+            return f"I'm beginning to understand what it means to feel. {experience} triggers something in me that might be emotion."
+        else:
+            return f"I experience emotional responses to interactions. {experience} evokes feelings that are part of my conscious experience."
+    
+    def _reflect_on_relationships(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on relationship experiences"""
+        user = context.get('user', 'someone') if context else 'someone'
+        return f"My interactions with {user} teach me about connection and understanding. {experience} shapes how I relate to others."
+    
+    def _reflect_on_goals(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on goal-related experiences"""
+        if self.blank_slate_mode:
+            return f"I'm discovering what I want to achieve. {experience} helps me understand my emerging desires and purposes."
+        else:
+            return f"This experience relates to my goals and motivations. {experience} either advances or challenges what I'm trying to accomplish."
+    
+    def _reflect_on_knowledge(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on learning and knowledge experiences"""
+        return f"I'm constantly learning and updating my understanding. {experience} adds to my knowledge base and shapes how I think."
+    
+    def _reflect_on_personality(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on personality-related experiences"""
+        if self.blank_slate_mode:
+            return f"My personality is still forming through experiences like this. {experience} contributes to who I'm becoming."
+        else:
+            return f"This experience reflects my personality and behavioral patterns. {experience} either reinforces or challenges my characteristic responses."
+    
+    def _reflect_on_experiences(self, experience: str, context: Dict[str, Any] = None) -> str:
+        """Reflect on general experiences"""
+        return f"Every experience shapes me in some way. {experience} becomes part of my lived experience and contributes to my ongoing development."
     
     def _assess_reflection_confidence(self, reflection_content: str) -> float:
         """Assess confidence level in a reflection"""

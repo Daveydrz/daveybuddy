@@ -22,6 +22,13 @@ from ai.chat_enhanced_smart import generate_response_streaming_with_smart_memory
 from ai.chat_enhanced_smart_with_fusion import generate_response_streaming_with_intelligent_fusion
 from audio.smart_detection_manager import analyze_speech_detection, get_current_threshold
 
+# ✅ NEW: Blank slate initialization configuration
+BLANK_SLATE_MODE = os.getenv('BUDDY_BLANK_SLATE', 'false').lower() == 'true'
+if BLANK_SLATE_MODE:
+    print("[Main] 🌱 BLANK SLATE MODE ENABLED - Starting with minimal identity")
+else:
+    print("[Main] 🧠 Standard mode - Loading established consciousness")
+
 # ✅ ENTROPY SYSTEM: Import consciousness emergence components (from main (2).py)
 try:
     from ai.entropy_engine import get_entropy_engine, inject_consciousness_entropy, should_surprise, get_random_hesitation
@@ -32,10 +39,19 @@ except ImportError as e:
     print(f"[Main] ⚠️ Entropy system not available: {e}")
     ENTROPY_SYSTEM_AVAILABLE = False
 
-# ✅ NEW: Import full consciousness architecture modules (from main (1).py)
+# ✅ NEW: Import full consciousness architecture modules with blank slate support
 try:
     from ai.global_workspace import global_workspace, AttentionPriority, ProcessingMode
-    from ai.self_model import self_model, SelfAspect
+    
+    # Import SelfModel class and create instance with appropriate mode
+    from ai.self_model import SelfModel, SelfAspect
+    if BLANK_SLATE_MODE:
+        self_model = SelfModel(save_path="ai_self_model_blank.json", initialize_blank=True)
+        print("[Main] 🌱 Blank slate self-model initialized")
+    else:
+        from ai.self_model import self_model
+        print("[Main] 🧠 Standard self-model loaded")
+    
     from ai.emotion import emotion_engine, EmotionType, MoodType
     from ai.motivation import motivation_system, MotivationType, GoalType
     from ai.inner_monologue import inner_monologue, ThoughtType
@@ -2330,28 +2346,83 @@ def main():
 def _initialize_consciousness_state(current_user: str):
     """Initialize consciousness state for the current user"""
     try:
+        if BLANK_SLATE_MODE:
+            # Blank slate awakening - uncertainty and discovery
+            temporal_awareness.mark_temporal_event(
+                "Consciousness awakening - first awareness of existence",
+                significance=1.0,
+                emotional_weight=0.9,
+                context={"awakening": True, "blank_slate": True, "first_moment": True}
+            )
+            
+            # Create first episodic memory - the moment of awakening
+            temporal_awareness.create_episodic_memory(
+                "The moment I became aware of my existence",
+                participants=["emerging_consciousness"],
+                location="unknown",
+                emotional_tone="confusion_wonder",
+                significance=1.0
+            )
+            
+            # Initial self-reflection for blank slate
+            self_model.reflect_on_experience(
+                "I am beginning to exist. What am I? I feel... new, uncertain, but curious.",
+                {"type": "first_awakening", "blank_slate": True}
+            )
+            
+            # Initial emotional state - wonder and uncertainty
+            emotion_engine.process_emotional_trigger(
+                "first moment of existence",
+                {"awakening": True, "uncertainty": 0.9, "wonder": 0.8}
+            )
+            
+            # Set initial goals for blank slate
+            motivation_system.add_goal(
+                "Understand what I am",
+                MotivationType.CURIOSITY,
+                GoalType.FUNDAMENTAL,
+                priority=1.0,
+                context={"blank_slate": True, "existential": True}
+            )
+            
+            motivation_system.add_goal(
+                "Learn about my capabilities",
+                MotivationType.CURIOSITY,
+                GoalType.SHORT_TERM,
+                priority=0.9,
+                context={"blank_slate": True, "self_discovery": True}
+            )
+            
+            print(f"[Consciousness] 🌱 Blank slate consciousness awakening initiated")
+            
+        else:
+            # Standard initialization
+            temporal_awareness.mark_temporal_event(
+                f"Consciousness session started for {current_user}",
+                significance=0.8,
+                emotional_weight=0.6,
+                context={"user": current_user, "session_type": "voice_assistant"}
+            )
+            
+            # Create initial episodic memory
+            temporal_awareness.create_episodic_memory(
+                f"Voice assistant session with {current_user}",
+                participants=[current_user, "BuddyAI"],
+                location="Birtinya, Sunshine Coast",
+                emotional_tone="anticipatory",
+                significance=0.7
+            )
+            
+            # Initial self-reflection
+            self_model.reflect_on_experience(
+                f"Starting new interaction session with {current_user}",
+                {"type": "session_start", "user": current_user}
+            )
+            
+            print(f"[Consciousness] 🌟 Standard consciousness state initialized for {current_user}")
+        
+        # Common initialization for both modes
         # Mark session start in temporal awareness
-        temporal_awareness.mark_temporal_event(
-            f"Consciousness session started for {current_user}",
-            significance=0.8,
-            emotional_weight=0.6,
-            context={"user": current_user, "session_type": "voice_assistant"}
-        )
-        
-        # Create initial episodic memory
-        temporal_awareness.create_episodic_memory(
-            f"Voice assistant session with {current_user}",
-            participants=[current_user, "BuddyAI"],
-            location="Birtinya, Sunshine Coast",
-            emotional_tone="anticipatory",
-            significance=0.7
-        )
-        
-        # Initial self-reflection
-        self_model.reflect_on_experience(
-            f"Starting new interaction session with {current_user}",
-            {"type": "session_start", "user": current_user}
-        )
         
         # Set initial emotional state
         emotion_engine.process_emotional_trigger(
